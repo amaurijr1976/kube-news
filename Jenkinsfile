@@ -3,18 +3,18 @@ pipeline{
     stages {
 
         stage ('Build Docker Image'){
-            steps{
-                script{
-                    dockerapp= docker.build("amaurijr1976/kube-news:${env:BUILD_ID}", '-f ./src/Dockerfile ./src')
+            steps {
+                scrip {
+                    dockerapp = docker.build("amaurijr1976/kube-news:${env:BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
-         stage ('Registrar Docker Image'){
-            steps{
-                script{
-                    docker.withregistry('https://registry.hub.docker.com','dockerhub')
+         stage ('Registrar Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com','dockerhub')
                         dockerapp.push('latest')
-                        dockerapp.push("${env.BUILD_ID}")
+                        dockerapp.push("${env:BUILD_ID}")
                 }
             }
         }
